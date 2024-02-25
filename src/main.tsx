@@ -4,6 +4,8 @@ import { RouterProvider } from "react-router-dom";
 import { store } from './redux/store'
 import { Provider } from 'react-redux'
 import router from "./router/router.tsx";
+import 'swiper/css';
+import 'swiper/css/pagination';
 import './index.css'
 
 

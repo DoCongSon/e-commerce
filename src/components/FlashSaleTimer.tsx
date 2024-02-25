@@ -32,34 +32,22 @@ const FlashSaleTimer = (props: FlashSaleTimerProps) => {
     }, [timer]);
 
     if(props.type === 'secondary') return (
-        <div className="flex gap-3 items-center">
-            <div className="w-[62px] h-[62px] rounded-full bg-black flex flex-col items-center justify-center">
-                <p className="block font-semibold font-primary leading-tight text-[#FAFAFA]">{days < 10 ? '0' + days : days}</p>
-                <p className="block font-normal -mt-1 text-xs leading-[18px] text-[#FAFAFA]">Days</p>
+        <div className="flex gap-6 items-center">
+            <div className="w-[62px] h-[62px] rounded-full bg-white flex flex-col items-center justify-center">
+                <p className="block font-semibold font-primary leading-tight text-black">{days < 10 ? '0' + days : days}</p>
+                <p className="block font-normal -mt-1 text-xs leading-[18px] text-black">Days</p>
             </div>
-            <div className="flex flex-col gap-2">
-                <div className="w-[6px] h-[6px] rounded-full bg-[#E07575]"></div>
-                <div className="w-[6px] h-[6px] rounded-full bg-[#E07575]"></div>
+            <div className="w-[62px] h-[62px] rounded-full bg-white flex flex-col items-center justify-center">
+                <p className="block font-semibold font-primary leading-tight text-black">{hours < 10 ? '0' + hours : hours}</p>
+                <p className="block font-normal -mt-1 text-xs leading-[18px] text-black">Hours</p>
             </div>
-            <div className="w-[62px] h-[62px] rounded-full bg-black flex flex-col items-center justify-center">
-                <p className="block font-semibold font-primary leading-tight text-[#FAFAFA]">{hours < 10 ? '0' + hours : hours}</p>
-                <p className="block font-normal -mt-1 text-xs leading-[18px] text-[#FAFAFA]">Hours</p>
+            <div className="w-[62px] h-[62px] rounded-full bg-white flex flex-col items-center justify-center">
+                <p className="block font-semibold font-primary leading-tight text-black">{minutes < 10 ? '0' + minutes : minutes}</p>
+                <p className="block font-normal -mt-1 text-xs leading-[18px] text-black">Minutes</p>
             </div>
-            <div className="flex flex-col gap-2">
-                <div className="w-[6px] h-[6px] rounded-full bg-[#E07575]"></div>
-                <div className="w-[6px] h-[6px] rounded-full bg-[#E07575]"></div>
-            </div>
-            <div className="w-[62px] h-[62px] rounded-full bg-black flex flex-col items-center justify-center">
-                <p className="block font-semibold font-primary leading-tight text-[#FAFAFA]">{minutes < 10 ? '0' + minutes : minutes}</p>
-                <p className="block font-normal -mt-1 text-xs leading-[18px] text-[#FAFAFA]">Minutes</p>
-            </div>
-            <div className="flex flex-col gap-2">
-                <div className="w-[6px] h-[6px] rounded-full bg-[#E07575]"></div>
-                <div className="w-[6px] h-[6px] rounded-full bg-[#E07575]"></div>
-            </div>
-            <div className="w-[62px] h-[62px] rounded-full bg-black flex flex-col items-center justify-center">
-                <p className="block font-semibold font-primary leading-tight text-[#FAFAFA]">{seconds < 10 ? '0' + seconds : seconds}</p>
-                <p className="block font-normal -mt-1 text-xs leading-[18px] text-[#FAFAFA]">Seconds</p>
+            <div className="w-[62px] h-[62px] rounded-full bg-white flex flex-col items-center justify-center">
+                <p className="block font-semibold font-primary leading-tight text-black">{seconds < 10 ? '0' + seconds : seconds}</p>
+                <p className="block font-normal -mt-1 text-xs leading-[18px] text-black">Seconds</p>
             </div>
         </div>
     )

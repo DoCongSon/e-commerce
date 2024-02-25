@@ -2,6 +2,8 @@ import { JSX } from "react";
 import TopHeader from "./components/TopHeader.tsx";
 import Header from "./components/Header.tsx";
 import Line from "../components/Line.tsx";
+import Footer from "./components/Footer.tsx";
+import Copyright from "./components/Copyright.tsx";
 
 interface DefaultLayotProps {
     children: JSX.Element
@@ -15,8 +17,11 @@ function DefaultLayout(props: DefaultLayotProps) {
                        }}/>
             <Header/>
             <Line/>
-            <div>{props.children}</div>
-            <p>footer</p>
+            <div className={'max-w-[1170px] mx-auto'}>
+                {props.children}
+            </div>
+            <Footer/>
+            <Copyright/>
         </div>
     );
 }

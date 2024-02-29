@@ -22,10 +22,10 @@ const CartItem = (props: CartItemProps) => {
                 </div>
                 <p>{props.name}</p>
             </div>
-            <p>{props.price}</p>
+            <p>{props.price.toFixed(2)}</p>
             <NumberInput value={props.quantity} onUp={() => props.onIncrease(props.id)}
                          onDown={() => props.onDecrease(props.id)}/>
-            <p>{props.quantity * props.price}</p>
+            <p>{(props.quantity * props.price).toFixed(2)}</p>
             <div>
                 <XCircle className={'absolute top-4 right-4 cursor-pointer text-buttons'} size={24}
                          onClick={() => props.onCartRemove(props.id)}/>

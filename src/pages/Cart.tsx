@@ -84,17 +84,17 @@ const Cart = () => {
                     <p className={'text-xl font-medium text-black'}>Cart Total</p>
                     <div className={'flex items-center justify-between my-4 mt-6'}>
                         <p className={'text-base font-normal text-black'}>Subtotal:</p>
-                        <p className={'text-base font-normal text-black'}>${subtotal}</p>
+                        <p className={'text-base font-normal text-black'}>${subtotal.toFixed(2)}</p>
                     </div>
                     <Line/>
                     <div className={'flex items-center justify-between my-4'}>
                         <p className={'text-base font-normal text-black'}>Shipping:</p>
-                        <p className={'text-base font-normal text-black'}>${shippingFee}</p>
+                        <p className={'text-base font-normal text-black'}>${shippingFee.toFixed(2)}</p>
                     </div>
                     <Line/>
                     <div className={'flex items-center justify-between my-4'}>
                         <p className={'text-base font-normal text-black'}>Total:</p>
-                        <p className={'text-base font-normal text-black'}>${subtotal + shippingFee}</p>
+                        <p className={'text-base font-normal text-black'}>${(subtotal + shippingFee).toFixed(2)}</p>
                     </div>
                     <div className={'mt-2 flex items-center justify-center'}>
                         <Button text={'Procees to checkout'}

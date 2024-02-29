@@ -3,6 +3,7 @@ import Line from "../components/Line.tsx";
 import Button from "../components/Button.tsx";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { sendContact } from "../services/other.ts";
 
 const Contact = () => {
     const [nameInput, setNameInput] = useState<string>('');
@@ -10,8 +11,16 @@ const Contact = () => {
     const [phoneInput, setPhoneInput] = useState<string>('');
     const [messageInput, setMessageInput] = useState<string>('');
 
-    const handleContact = () => {
+    const handleContact = async () => {
+        if(nameInput === '' || emailInput === '' || phoneInput === '' || messageInput === '') {
+            return toast('Please fill all fields', {type: 'error'});
+        }
+        await sendContact({name: nameInput, email: emailInput, phone: phoneInput, message: messageInput});
         toast('Thank you for contacting us', {type: 'success'});
+        setNameInput('');
+        setEmailInput('');
+        setPhoneInput('');
+        setMessageInput('');
     }
 
     return (

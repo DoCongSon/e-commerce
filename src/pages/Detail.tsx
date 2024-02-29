@@ -1,22 +1,26 @@
-import { productDetail, productsList } from "../FakeData/products.ts";
 import { useEffect, useState } from "react";
 import Rate from "../components/Rate.tsx";
 import Line from "../components/Line.tsx";
-import { Minus, Plus } from "lucide-react";
+import { Heart, Minus, Plus } from "lucide-react";
 import Button from "../components/Button.tsx";
 import DeliveryImg from "../assets/icon-delivery-black.svg";
 import ReturnImg from "../assets/Icon-return.svg";
 import ProductItem, { ProductItemProps } from "../components/ProductItem.tsx";
+import { useNavigate, useParams } from "react-router-dom";
+import { addProductToFavorite, getProductById, getRelatedProducts, Product } from "../services/product.ts";
+import useUser from "../hooks/useUser.ts";
+import { toast } from "react-toastify";
+import { handleErrors } from "../utils";
 
 interface ProductDetail {
-    id: number,
+    id: string,
     name: string,
     price: number,
     discount?: number,
     rate: 1 | 2 | 3 | 4 | 5,
     rateTotal: number,
     isNew: boolean,
-    photo: string[],
+    images: string[],
     description: string
 }
 
@@ -25,6 +29,7 @@ type ProductSize = 'XS' | 'S' | 'M' | 'L' | 'XL'
 const sizes: ProductSize[] = ['XS', 'S', 'M', 'L', 'XL'];
 
 const PickSize = (props: { active: ProductSize, onChange: (size: ProductSize) => void }) => {
+
     return (
         <div className={'flex gap-6 items-center'}>
             <p className={'text-black text-xl leading-none font-normal'}>Size: </p>
@@ -57,16 +62,73 @@ const PickSize = (props: { active: ProductSize, onChange: (size: ProductSize) =>
 
 const Detail = () => {
     const [product, setProduct] = useState<ProductDetail | null>(null);
-    const [imageDisplay, setImageDisplay] = useState<string>(productDetail.photo[0]);
+    const [imageDisplay, setImageDisplay] = useState<string>('');
     const [size, setSize] = useState<ProductSize>('S');
     const [quantity, setQuantity] = useState(1);
     const [relatedList, setRelatedList] = useState<ProductItemProps[]>([]);
-
+    const [isFavorite, setIsFavorite] = useState<boolean>(false);
+    const {id} = useParams();
+    const {favoriteProducts, user} = useUser();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        setProduct(productDetail);
-        setRelatedList(productsList.slice(0, 4));
-    }, []);
+        if(id) {
+            setIsFavorite(favoriteProducts.map((item) => item.id).includes(id));
+        } else {
+            setIsFavorite(false);
+        }
+    }, [favoriteProducts]);
+
+    useEffect(() => {
+        if(id) {
+            (async () => {
+                const result = await getProductById(id);
+                const relate = await getRelatedProducts(id);
+                if(result) {
+                    setProduct(result as ProductDetail);
+                    setImageDisplay(result.images[0]);
+                }
+                if(relate) {
+                    setRelatedList(relate as ProductItemProps[]);
+                }
+            })()
+        }
+    }, [id]);
+
+    const handleFavorite = async () => {
+        if(user) {
+            if(isFavorite) {
+                toast('Product already in favorite', {type: 'info', toastId: 'favorite1'});
+            } else {
+                try {
+                    await addProductToFavorite(product as Product);
+                    toast('Added to favorite', {type: 'success'})
+                } catch (e) {
+                    console.log(handleErrors(e));
+                }
+            }
+        } else {
+            toast('Please log in before adding products to favorite', {type: 'info', toastId: 2});
+        }
+    };
+
+    const handleBuyNow = () => {
+        if(user && product) {
+            navigate('/checkout', {
+                state: {
+                    product: {
+                        id: product?.id,
+                        name: product?.name,
+                        photo: product?.images[0],
+                        price: product?.price * (100 - (product?.discount || 0)),
+                        quantity
+                    }
+                }
+            });
+        } else {
+            toast('Please log in before buying products', {type: 'info', toastId: 3});
+        }
+    }
 
     if(!product) return null;
     return (
@@ -75,7 +137,7 @@ const Detail = () => {
                 <div className={'flex gap-[30px]'}>
                     <div className={'flex flex-col gap-4'}>
                         {
-                            product.photo?.map((photo, index) => {
+                            product.images?.map((photo, index) => {
                                 return (
                                     <div
                                         onClick={() => setImageDisplay(photo)}
@@ -107,15 +169,15 @@ const Detail = () => {
                         {product.discount &&
                           <div className={'flex gap-3'}>
                             <p
-                              className={'text-2xl leading-none font-semibold tracking-[0.72px] font-primary text-buttons'}>${product.price - product.price * product.discount / 100}</p>
+                              className={'text-2xl leading-none font-semibold tracking-[0.72px] font-primary text-buttons'}>${(product.price - product.price * product.discount / 100).toFixed(2)}</p>
                             <p
-                              className={'text-2xl leading-none font-semibold tracking-[0.72px] text-black font-primary opacity-50 line-through'}>${product.price}</p>
+                              className={'text-2xl leading-none font-semibold tracking-[0.72px] text-black font-primary opacity-50 line-through'}>${product.price.toFixed(2)}</p>
                           </div>
                         }
                         {
                             !product.discount &&
                           <p
-                            className={'text-2xl leading-none font-semibold tracking-[0.72px] font-primary text-buttons'}>${product.price}</p>
+                            className={'text-2xl leading-none font-semibold tracking-[0.72px] font-primary text-buttons'}>${product.price.toFixed(2)}</p>
                         }
                     </div>
                     <p className={'my-6 text-sm text-balance font-normal text-black'}>{product.description}</p>
@@ -123,7 +185,7 @@ const Detail = () => {
                     <div className={'mt-6'}>
                         <PickSize active={size} onChange={value => setSize(value)}/>
                     </div>
-                    <div className={'flex gap-4 mt-6'}>
+                    <div className={'flex gap-4 mt-6 items-center'}>
                         <div className={'flex select-none'}>
                             <div onClick={() => {
                                 if(quantity > 1) setQuantity(quantity - 1)
@@ -138,8 +200,12 @@ const Detail = () => {
                                 <Plus size={24} color={'white'}/>
                             </div>
                         </div>
-                        <Button text={'Buy Now'} size={"small"} onClick={() => {
-                        }}/>
+                        <Button text={'Buy Now'} size={"small"} onClick={handleBuyNow}/>
+                        <div
+                            onClick={handleFavorite}
+                            className={isFavorite ? 'bg-buttons text-zinc-50 border-none transition cursor-pointer group w-10 h-10 flex items-center justify-center rounded' : 'text-buttons bg-white border border-black/50 hover:bg-buttons hover:border-none hover:text-zinc-50 transition cursor-pointer group w-10 h-10 flex items-center justify-center rounded'}>
+                            <Heart className={'p-1.5'} size={32}/>
+                        </div>
                     </div>
                     <div className={'flex flex-col gap-4 py-6 rounded border border-black/50 mt-10'}>
                         <div className={'ml-4 flex gap-4 items-center'}>
@@ -174,10 +240,7 @@ const Detail = () => {
                 <div className={'flex gap-x-[30px] flex-wrap gap-y-[60px] mt-[60px]'}>
                     {
                         relatedList.map((item, index) => {
-                            return <ProductItem key={index} {...item} iconButton={{
-                                view: true, onView: () => {
-                                }
-                            }}/>;
+                            return <ProductItem key={index} {...item} />;
                         })
                     }
                 </div>

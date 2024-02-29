@@ -12,7 +12,11 @@ export default {
       },
       colors: {
         "buttons": "#DB4444"
-      }
+      },
+      screens: {
+        'tablet': '640px',
+        'laptop': '1170px',
+      },
     },
   },
   plugins: [],

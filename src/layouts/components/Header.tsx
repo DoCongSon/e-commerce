@@ -10,7 +10,7 @@ const Header = () => {
     const [isShowMenuUser, setIsShowMenuUser] = useState(false);
     const menuUserRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate()
-    const user = useUser();
+    const {user, cart, favoriteProducts} = useUser();
 
     const navBar = useMemo(() => {
         if(user) return navBarItems.filter(item => item.name !== 'Log In' && item.name !== 'Sign Up');
@@ -36,12 +36,13 @@ const Header = () => {
     }, [location]);
 
     return (
-        <div className={'flex items-center max-w-[1170px] mx-auto justify-between mt-10 mb-4'}>
+        <div
+            className={'flex items-center max-w-full laptop:max-w-[1170px] mx-auto justify-between mt-10 mb-4 px-5 laptop:px-0'}>
             <div>
                 <Link to={'/'}
                       className={"font-primary text-2xl leading-none tracking-[0.72px] font-bold text-black"}>Exclusive</Link>
             </div>
-            <div className={'flex gap-12 transition-all'}>
+            <div className={'hidden tablet:flex gap-12 transition-all'}>
                 {navBar && navBar.map((item, index) => {
                     if(item.to === location.pathname) return (
                         <Link to={item.to} key={index}
@@ -54,7 +55,7 @@ const Header = () => {
                 })}
             </div>
             <div className={'flex items-center justify-center gap-6'}>
-                <div className={'bg-[#F5F5F5] py-2 px-4 gap-2 rounded flex items-center justify-center'}>
+                <div className={'bg-[#F5F5F5] py-2 px-4 gap-2 rounded hidden laptop:flex items-center justify-center'}>
                     <input
                         className={'h-6 w-52 border-none outline-none bg-transparent font-normal leading-normal text-xs'}
                         type="text"
@@ -64,8 +65,26 @@ const Header = () => {
                 {
                     user &&
                   <div className={'flex gap-4 items-center justify-center'}>
-                    <IconButton onClick={() => navigate('/wishlist')} size={32} icon={Heart}/>
-                    <IconButton onClick={() => navigate('/cart')} size={32} icon={ShoppingCart}/>
+                    <div className={'flex items-center justify-center relative'}>
+                      <IconButton onClick={() => navigate('/wishlist')} size={32} icon={Heart}/>
+                        {
+                            favoriteProducts.length > 0 &&
+                          <div
+                            className={'w-4 h-4 bg-buttons rounded-full flex items-center justify-center absolute -top-1 -right-1'}>
+                            <p className={'text-xs font-normal text-zinc-50 leading-none'}>{favoriteProducts.length}</p>
+                          </div>
+                        }
+                    </div>
+                    <div className={'flex items-center justify-center relative'}>
+                      <IconButton onClick={() => navigate('/cart')} size={32} icon={ShoppingCart}/>
+                        {
+                            cart.length > 0 &&
+                          <div
+                            className={'w-4 h-4 bg-buttons rounded-full flex items-center justify-center absolute -top-1 -right-1'}>
+                            <p className={'text-xs font-normal text-zinc-50 leading-none'}>{cart.length}</p>
+                          </div>
+                        }
+                    </div>
                     <div className={'relative'}>
                       <IconButton onClick={() => setIsShowMenuUser(!isShowMenuUser)} icon={UserRound} type={'primary'}/>
                         {

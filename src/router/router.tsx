@@ -15,6 +15,9 @@ import Cart from "../pages/Cart.tsx";
 import Profile from "../pages/Profile.tsx";
 import AddressBook from "../pages/AddressBook.tsx";
 import Products from "../pages/Products.tsx";
+import Payment from "../pages/Payment.tsx";
+import Review from "../pages/Review.tsx";
+import Cancellations from "../pages/Cancellations.tsx";
 
 const router = createBrowserRouter([
     {
@@ -88,6 +91,27 @@ const router = createBrowserRouter([
                 handle: {
                     crumb: () => <Link to={'/account/address-book'}>My address book</Link>
                 }
+            },
+            {
+                path: "my-payment",
+                element: <Payment/>,
+                handle: {
+                    crumb: () => <Link to={'/account/my-payment'}>My payment</Link>
+                }
+            },
+            {
+                path: "my-reviews",
+                element: <Review/>,
+                handle: {
+                    crumb: () => <Link to={'/account/my-reviews'}>My reviews</Link>
+                }
+            },
+            {
+                path: "my-cancellations",
+                element: <Cancellations/>,
+                handle: {
+                    crumb: () => <Link to={'/account/my-cancellations'}>My cancellations</Link>
+                }
             }
         ]
     },
@@ -110,12 +134,12 @@ const router = createBrowserRouter([
         }
     },
     {
-        path: "products/:category",
+        path: "products",
         element: <DefaultLayout>
             <Products/>
         </DefaultLayout>,
         handle: {
-            crumb: () => <Link to={'/products/:category'}>Checkout</Link>
+            crumb: () => <Link to={'/products'}>Checkout</Link>
         }
     },
     {

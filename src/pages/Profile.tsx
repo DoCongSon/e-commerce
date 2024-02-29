@@ -1,23 +1,33 @@
 import { useEffect, useState } from "react";
 import Button from "../components/Button.tsx";
 import useUser from "../hooks/useUser.ts";
+import { updateUser } from "../services/user.ts";
+import { handleErrors } from "../utils";
+import { toast } from "react-toastify";
 
 const Profile = () => {
     const [displayNameInput, setDisplayNameInput] = useState<string>('');
-    const [phoneInput, setPhoneInput] = useState<string>('');
     const [emailInput, setEmailInput] = useState<string>('');
     const [currentPasswordInput, setCurrentPasswordInput] = useState<string>('');
     const [newPasswordInput, setNewPasswordInput] = useState<string>('');
     const [confirmPasswordInput, setConfirmPasswordInput] = useState<string>('');
-    const user = useUser();
+    const {user} = useUser();
 
     useEffect(() => {
         if(user) {
             setDisplayNameInput(user.displayName || '');
-            setPhoneInput(user.phoneNumber || '');
             setEmailInput(user.email || '');
         }
     }, [user]);
+
+    const handleSaveChanges = async () => {
+        try {
+            await updateUser(displayNameInput);
+            toast('Profile updated successfully', {type: 'success'});
+        } catch (error) {
+            console.error(handleErrors(error));
+        }
+    }
 
     return (
         <div className={'flex flex-col gap-4'}>
@@ -32,18 +42,9 @@ const Profile = () => {
                 </div>
                 <div className={'w-full'}>
                     <p className={'text-black text-base font-medium'}>
-                        Phone Number
-                    </p>
-                    <input value={phoneInput} onChange={e => setPhoneInput(e.target.value)} type="text"
-                           className={'mt-2 h-[50px] w-full rounded bg-[#f5f5f5] text-black text-base font-normal px-4 outline-none'}/>
-                </div>
-            </div>
-            <div className={'flex gap-[50px]'}>
-                <div className={'w-full'}>
-                    <p className={'text-black text-base font-medium'}>
                         Email
                     </p>
-                    <input value={emailInput} onChange={e => setEmailInput(e.target.value)} type="email"
+                    <input disabled={true} value={emailInput} onChange={e => setEmailInput(e.target.value)} type="email"
                            className={'mt-2 h-[50px] w-full rounded bg-[#f5f5f5] text-black text-base font-normal px-4 outline-none'}/>
                 </div>
             </div>
@@ -67,10 +68,9 @@ const Profile = () => {
                 </div>
             </div>
             <div className={'mt-2 flex gap-4 justify-end'}>
-                <Button type={'secondary'} text={'Cancel'} onClick={() => {
-                }}/>
-                <Button text={'Save Changes'} onClick={() => {
-                }}/>
+                <Button type={'secondary'} text={'Cancel'}
+                        onClick={() => setDisplayNameInput(user?.displayName || "")}/>
+                <Button text={'Save Changes'} onClick={handleSaveChanges}/>
             </div>
         </div>
     );

@@ -2,14 +2,14 @@ import NumberInput from "./NumberInput.tsx";
 import { XCircle } from "lucide-react";
 
 interface CartItemProps {
-    id: number;
+    id: string;
     name: string;
-    image: string;
+    photo: string;
     price: number;
     quantity: number;
-    onCartRemove: (id: number) => void;
-    onIncrease: (id: number) => void;
-    onDecrease: (id: number) => void;
+    onCartRemove: (id: string) => void;
+    onIncrease: (id: string) => void;
+    onDecrease: (id: string) => void;
 }
 
 const CartItem = (props: CartItemProps) => {
@@ -18,7 +18,7 @@ const CartItem = (props: CartItemProps) => {
             className={'select-none relative grid grid-cols-[500px_1fr_1fr_70px] h-[100px] items-center rounded px-10 py-6 bg-white shadow text-black font-normal text-base'}>
             <div className={'flex items-center gap-5'}>
                 <div className={'w-14 h-14 flex items-center'}>
-                    <img className={'w-full object-cover'} src={props.image}/>
+                    <img className={'w-full object-cover'} src={props.photo}/>
                 </div>
                 <p>{props.name}</p>
             </div>

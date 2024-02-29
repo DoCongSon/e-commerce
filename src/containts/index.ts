@@ -14,10 +14,10 @@ import willSmith from '../assets/will-smith.png';
 import emmaWatson from '../assets/emma-watson.png';
 import tomCruise from '../assets/tom-cruise.png';
 
-
 interface MenuItem {
     name: string;
     subMenu?: MenuItem[];
+    category?: string;
 }
 
 const menuItems: MenuItem[] = [
@@ -25,16 +25,24 @@ const menuItems: MenuItem[] = [
         name: 'Woman’s Fashion',
         subMenu: [
             {
-                name: 'clothes'
+                name: 'Women\'s dresses',
+                category: 'womens-dresses'
             },
             {
-                name: 'Footwear'
+                name: 'Women\'s shoes',
+                category: 'womens-shoes'
             },
             {
-                name: 'Accessories'
+                name: 'Women\'s watches',
+                category: 'womens-watches'
             },
             {
-                name: 'Jewellery'
+                name: 'Women\'s bags',
+                category: 'womens-bags'
+            },
+            {
+                name: 'Women\'s jewellery',
+                category: 'womens-jewellery'
             }
         ]
     },
@@ -42,50 +50,82 @@ const menuItems: MenuItem[] = [
         name: 'Men’s Fashion',
         subMenu: [
             {
-                name: 'clothes'
+                name: 'Men\'s shirts',
+                category: 'mens-shirts'
             },
             {
-                name: 'Footwear'
+                name: 'Men\'s shoes',
+                category: 'mens-shoes'
             },
             {
-                name: 'Accessories'
-            },
-            {
-                name: 'Jewellery'
+                name: 'Men\'s watches',
+                category: 'mens-watches'
             }
         ]
     },
     {
-        name: 'Electronics'
+        name: 'Smartphones',
+        category: 'smartphones'
 
     },
     {
-        name: 'Home & Lifestyle'
+        name: 'Laptops',
+        category: 'laptops'
     },
     {
-        name: 'Medicine'
+        name: 'fragrances',
+        category: 'fragrances'
     },
     {
-        name: 'Sports & Outdoor'
+        name: 'Skincare',
+        category: 'skincare'
     },
     {
-        name: 'Baby’s & Toys'
+        name: 'Groceries',
+        category: 'groceries'
     },
     {
-        name: 'Groceries & Pets'
+        name: 'home-decoration',
+        category: 'home-decoration'
     },
     {
-        name: 'Health & Beauty'
+        name: 'Other',
+        subMenu: [
+            {
+                name: 'Furniture',
+                category: 'furniture'
+            },
+            {
+                name: 'Tops',
+                category: 'tops'
+            },
+            {
+                name: 'Sunglasses',
+                category: 'sunglasses'
+            },
+            {
+                name: 'Automotive',
+                category: 'automotive'
+            },
+            {
+                name: 'Motorcycle',
+                category: 'motorcycle'
+            },
+            {
+                name: 'Lighting',
+                category: 'lighting'
+            }
+        ]
     }
 ];
 
 const categories: CategoryItemProps[] = [
-    {title: 'Phones', image: PhonesImage},
-    {title: 'Computers', image: ComputersImage},
-    {title: 'SmartWatch', image: SmartWatchImage},
-    {title: 'Camera', image: CameraImage},
-    {title: 'HeadPhones', image: HeadPhonesImage},
-    {title: 'Gaming', image: GamingImage}
+    {title: 'Phones', image: PhonesImage, category: 'smartphones'},
+    {title: 'Computers', image: ComputersImage, category: 'laptops'},
+    {title: 'SmartWatch', image: SmartWatchImage, category: 'watches'},
+    {title: 'Camera', image: CameraImage, category: 'camera'},
+    {title: 'HeadPhones', image: HeadPhonesImage, category: 'headphones'},
+    {title: 'Gaming', image: GamingImage, category: 'gaming'}
 
 ];
 
@@ -151,7 +191,7 @@ const accountMenuItems = [
             },
             {
                 name: 'My Payment Options',
-                to: '/my-payment'
+                to: '/account/my-payment'
             }
         ]
     },

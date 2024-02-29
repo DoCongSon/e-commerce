@@ -4,7 +4,7 @@ import useUser from "../hooks/useUser.ts";
 
 const Account = () => {
     const location = useLocation();
-    const user = useUser();
+    const {user} = useUser();
 
     return (
         <div className={'mt-20 mb-[140px]'}>

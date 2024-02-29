@@ -1,4 +1,5 @@
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
+import { doc, setDoc } from "firebase/firestore";
 import {
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
@@ -35,4 +36,21 @@ const logOut = async () => {
     await signOut(auth);
 }
 
-export { signUpWithEmail, logInWithEmail, logInWithGoogle, logOut }
+const updateUser = async (displayName: string) => {
+    const user = auth.currentUser;
+    if(user) {
+        await updateProfile(user, {displayName});
+    }
+}
+
+const updateAddressBook = async (uid: string, addressBook: {
+    companyName: string,
+    address: string,
+    apartment: string,
+    phone: string,
+    city: string
+}) => {
+    await setDoc(doc(db, "users", uid), addressBook);
+}
+
+export { signUpWithEmail, logInWithEmail, logInWithGoogle, logOut, updateUser, updateAddressBook }

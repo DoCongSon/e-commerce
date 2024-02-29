@@ -5,6 +5,7 @@ import IconGoogle from "../assets/Icon-Google.svg";
 import { logInWithEmail, logInWithGoogle } from "../services/user.ts";
 import { Link, useNavigate } from "react-router-dom";
 import { handleErrors } from "../utils";
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const [emailInput, setEmailInput] = useState('');
@@ -25,6 +26,7 @@ const Login = () => {
     const handleLogInWithGoogle = async () => {
         try {
             await logInWithGoogle();
+            toast('Logged in successfully', {type: 'success'});
             navigate('/account/my-profile');
         } catch (error) {
             setError(handleErrors(error));

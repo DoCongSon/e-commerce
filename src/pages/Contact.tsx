@@ -2,12 +2,17 @@ import { Mail, Phone } from "lucide-react";
 import Line from "../components/Line.tsx";
 import Button from "../components/Button.tsx";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const Contact = () => {
     const [nameInput, setNameInput] = useState<string>('');
     const [emailInput, setEmailInput] = useState<string>('');
     const [phoneInput, setPhoneInput] = useState<string>('');
     const [messageInput, setMessageInput] = useState<string>('');
+
+    const handleContact = () => {
+        toast('Thank you for contacting us', {type: 'success'});
+    }
 
     return (
         <div className={'mt-20 mb-[140px] flex gap-[30px]'}>
@@ -67,8 +72,7 @@ const Contact = () => {
                               className={'h-[200px] mt-2 w-full rounded bg-[#f5f5f5] text-black text-base font-normal p-4 outline-none'}/>
                 </div>
                 <div className={'mt-8 flex justify-end'}>
-                    <Button text={'Send Massage'} onClick={() => {
-                    }}/>
+                    <Button text={'Send Massage'} onClick={handleContact}/>
                 </div>
             </div>
         </div>

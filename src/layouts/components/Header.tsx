@@ -6,11 +6,19 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import useUser from "../../hooks/useUser.ts";
 
 const Header = () => {
-    const location = useLocation();
     const [isShowMenuUser, setIsShowMenuUser] = useState(false);
+    const [searchInput, setSearchInput] = useState('');
+    const location = useLocation();
     const menuUserRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate()
     const {user, cart, favoriteProducts} = useUser();
+
+    const handleSearch = () => {
+        if(searchInput !== '') {
+            navigate(`/search/${searchInput}`);
+            setSearchInput('');
+        }
+    }
 
     const navBar = useMemo(() => {
         if(user) return navBarItems.filter(item => item.name !== 'Log In' && item.name !== 'Sign Up');
@@ -57,10 +65,12 @@ const Header = () => {
             <div className={'flex items-center justify-center gap-6'}>
                 <div className={'bg-[#F5F5F5] py-2 px-4 gap-2 rounded hidden laptop:flex items-center justify-center'}>
                     <input
+                        value={searchInput}
+                        onChange={e => setSearchInput(e.target.value)}
                         className={'h-6 w-52 border-none outline-none bg-transparent font-normal leading-normal text-xs'}
                         type="text"
                         placeholder={'What are you looking for?'}/>
-                    <IconButton icon={Search} size={24}/>
+                    <IconButton icon={Search} size={24} onClick={handleSearch}/>
                 </div>
                 {
                     user &&

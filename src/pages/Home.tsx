@@ -116,9 +116,9 @@ const Home = () => {
                     </div>
                     <div className={'hidden tablet:flex gap-2 mb-[9px]'}>
                         <ArrowLeft onClick={handlePrevPagePlashSale} size={46}
-                                   className={'px-2.5 rounded-full bg-[#f5f5f5]'}/>
+                                   className={'px-2.5 rounded-full bg-[#f5f5f5] cursor-pointer'}/>
                         <ArrowRight onClick={handleNextPagePlashSale} size={46}
-                                    className={'px-2.5 rounded-full bg-[#f5f5f5]'}/>
+                                    className={'px-2.5 rounded-full bg-[#f5f5f5] cursor-pointer'}/>
                     </div>
                 </div>
                 <div className={'mt-[60px]'}>
@@ -201,9 +201,9 @@ const Home = () => {
                     </div>
                     <div className={'hidden tablet:flex gap-2 mb-[9px]'}>
                         <ArrowLeft onClick={handlePrevPageExploreOurProducts} size={46}
-                                   className={'px-2.5 rounded-full bg-[#f5f5f5]'}/>
+                                   className={'px-2.5 rounded-full bg-[#f5f5f5] cursor-pointer'}/>
                         <ArrowRight onClick={handleNextPageExploreOurProducts} size={46}
-                                    className={'px-2.5 rounded-full bg-[#f5f5f5]'}/>
+                                    className={'px-2.5 rounded-full bg-[#f5f5f5] cursor-pointer'}/>
                     </div>
                 </div>
                 <div className={'mt-[60px]'}>

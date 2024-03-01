@@ -18,6 +18,7 @@ import Products from "../pages/Products.tsx";
 import Payment from "../pages/Payment.tsx";
 import Review from "../pages/Review.tsx";
 import Cancellations from "../pages/Cancellations.tsx";
+import Search from "../pages/Search.tsx";
 
 const router = createBrowserRouter([
     {
@@ -140,6 +141,15 @@ const router = createBrowserRouter([
         </DefaultLayout>,
         handle: {
             crumb: () => <Link to={'/products'}>Checkout</Link>
+        }
+    },
+    {
+        path: "search/:query",
+        element: <DefaultLayout>
+            <Search/>
+        </DefaultLayout>,
+        handle: {
+            crumb: () => <Link to={'/search/:query'}>Checkout</Link>
         }
     },
     {

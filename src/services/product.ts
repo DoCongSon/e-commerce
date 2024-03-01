@@ -183,6 +183,17 @@ const decreaseProductQuantity = async (id: string) => {
     }
 }
 
+const queryProductsByName = async (name: string) => {
+    const q = query(collection(db, "products"), where("name", ">=", name), where("name", "<=", name + "\uf8ff"));
+    const querySnapshot = await getDocs(q);
+    const products: Product[] = [];
+    querySnapshot.forEach((doc) => {
+        products.push(<Product>{...doc.data(), id: doc.id});
+    });
+    return products;
+
+}
+
 export {
     increaseProductQuantity,
     decreaseProductQuantity,
@@ -192,6 +203,7 @@ export {
     getProductById,
     getRelatedProducts,
     removeProductFromFavorite,
-    removeProductFromCart
+    removeProductFromCart,
+    queryProductsByName
 };
 export type { Product };

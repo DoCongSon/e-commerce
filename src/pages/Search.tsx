@@ -1,39 +1,36 @@
 import ProductItem, { ProductItemProps } from "../components/ProductItem.tsx";
 import { useEffect, useLayoutEffect, useState } from "react";
-import Pagination from "../components/Pagination.tsx";
-import { useSearchParams } from "react-router-dom";
-import { getProductsByCategory } from "../services/product.ts";
+import { useParams } from "react-router-dom";
 import useUser from "../hooks/useUser.ts";
+import { handleErrors } from "../utils";
+import { queryProductsByName } from "../services/product.ts";
 
-const Products = () => {
-    const [products, setProducts] = useState<ProductItemProps[]>([]);
+const Search = () => {
+    const [searchProducts, setSearchProducts] = useState<ProductItemProps[]>([]);
     const [title, setTitle] = useState<string>('');
-    const [page, setPage] = useState<number>(1);
-    const [searchParams, setSearchParams] = useSearchParams();
     const [favoriteList, setFavoriteList] = useState<string[]>([]);
     const {favoriteProducts} = useUser();
+    const {query} = useParams();
 
     useEffect(() => {
         setFavoriteList(favoriteProducts.map((item) => item.id));
     }, [favoriteProducts]);
 
-
     useLayoutEffect(() => {
-        setTitle((searchParams.get('category') || 'All products'));
-    }, [searchParams]);
-
-    useEffect(() => {
-        (async () => {
-            const result = await getProductsByCategory(title);
-            if(result) {
-                setProducts(result);
-            }
-        })()
-    }, [title]);
-
-    useEffect(() => {
-        setSearchParams({category: title, page: page.toString()});
-    }, [page, setSearchParams, title]);
+        if(query) {
+            (async () => {
+                try {
+                    const products = await queryProductsByName(query);
+                    setSearchProducts(products);
+                } catch (e) {
+                    console.log(handleErrors(e));
+                }
+            })()
+            setTitle(`Search for: ${query}`);
+        } else {
+            setTitle('');
+        }
+    }, [query]);
 
     return (
         <div className={'mt-20 mb-[140px]'}>
@@ -43,19 +40,20 @@ const Products = () => {
             </div>
             <div className={'flex gap-x-[30px] flex-wrap gap-y-[60px] mt-[60px]'}>
                 {
-                    products.slice((page - 1) * 8, page * 8).map((item) => {
+                    searchProducts.length > 0 && searchProducts.map((item) => {
                         return <ProductItem key={item.id} {...item} iconButton={{
                             favorite: true
                         }} isFavorite={favoriteList.includes(item.id)}/>;
                     })
                 }
-            </div>
-            <div className={'mt-[60px] flex items-center justify-center'}>
-                <Pagination total={products.length} perPage={8} currentPage={page} onChange={page => setPage(page)}/>
+                {
+                    searchProducts.length === 0 && (
+                        <p className={'text-2xl font-normal leading-none text-black'}>No products found</p>
+                    )
+                }
             </div>
         </div>
     );
 };
-3
 
-export default Products;
+export default Search;
